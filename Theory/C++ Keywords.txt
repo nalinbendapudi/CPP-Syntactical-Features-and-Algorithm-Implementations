@@ -1,0 +1,336 @@
+----------------
+
+virtual
+- 'virtual' keyword is used to indicate that a base class member function is a virtual function
+- For a base class pointer pointing to derived class object, calling the virtual function will call the derived class function (which overrides the virtual base class function)  
+- Virtual functions are used to implement runtime polymorphism
+- Virtual functions have a cost overhead due to maintenace of vTable
+- e.g.: https://www.ideone.com/lo24zX (D:\UMich\Academics\ProgrammingPractice\CPP\virtualFunction)
+
+https://youtu.be/oIV2KchSyGQ
+https://youtu.be/Eaz0P_gJ9FE
+https://www.geeksforgeeks.org/virtual-function-cpp/
+
+
+----------------
+
+final
+- final is not a keyword. It's an identifier or specifier. (We can have a variable named 'final')
+- It was introduced in C++11
+- Two uses of the final specifier:
+
+1. For virtual functions:
+	- Only virtual functions can be marked as final
+	- Virtual functions marked as final can't be overriden in the derived class
+	- e.g.: 
+	class Base{
+		public:
+		virtual void myfun() final { //function definition}
+	};
+	
+2. For classes/structs:
+	- Classes or structs marked as final can't inherited
+	- e.g.:
+	class Base final {
+		\\class definition
+	};
+	
+https://www.geeksforgeeks.org/c-final-specifier/ 
+https://youtu.be/WObyOa2FXwI (How To Make A Class Non Inheritable Without Using final Keyword In C++)
+
+
+----------------
+
+override
+- override is not a keyword. It's an identifier or specifier. (We can have a variable named 'override')
+- It was introduced in C++11
+- This keyword was introduced to avoid silly mistakes by the programmer. It's not mandatory to use it.
+- One use of the override specifier:
+
+1. For virtual functions:
+	- Only virtual functions can be overridden in the derived class
+	- If a function marked override isn't overriding a virtual function of base class, it will result in a compile error
+	- e.g.: 
+	class Derived{
+		public: 
+		void myfun() override { //function definition}
+	};
+	
+https://www.geeksforgeeks.org/override-keyword-c/
+
+
+----------------
+
+static
+- There are several contexts in which static keyword can be used:
+
+1. For global variables/functions:
+	- In general, a global variable/function can be accessed across multiple cpp files. 
+	- Compiling a folder or a package, where two or more files have a global variable with the same name, will give an error.  
+	- static keyword restricts the scope of global variable to the cpp file it's declared in
+
+2. For variables inside a function:
+	- When a variable is declared as static, space for it gets allocated for the lifetime of the program.
+	- Even if the function is called multiple times, space for the static variable is allocated only once and the value of variable in the previous call gets carried through the next function call.
+	- Although lifetime of a local static variable is of the entire program, the scope of the variable is still limited to the function it's defined in
+
+3. For class member variable:
+	- Similar to local static variables, they have lifetime of the program and scope of the corresponding objects
+	- Static class variables are shared by all the objects of the class
+	- e.g.:
+	class A {
+		public: static int i;
+	};
+	int A::i = 3;	// static variable can be accessed using the class name and scope resolution operator
+	A obj1;
+	obj1.i = 4;		// static variable can also be be accessed through the object like other variables
+	
+4. For class member functions:
+	- Similar to static member variables, static member functions are shared among the objects 
+	- Static member functions are allowed to access only the static data members or other static member functions.
+
+5. For objects:
+	- A static object's lifetime will be equal to the length of the program.
+	- Hence, its destructor would be called only just before the program ends and not when it goes out of scope.
+
+https://youtu.be/f3FVU-iwNuA (Global static)
+https://youtu.be/f7mtWD9GdJ4 (Local static)
+https://youtu.be/V-BFlMrBtqQ (static for classes/structs)
+https://www.geeksforgeeks.org/static-keyword-cpp/
+
+
+----------------
+
+mutable
+- English word 'mutable' refers to 'something that can change'. Opposite of 'immutable'
+- First, a primer about const methods:
+	- A const member function of a class is a function that doesn't change any of the member variables.
+	- A const method can be called by const or non-const objects, but const objects can only call const member functions
+- Sometimes you need the const method to modify a class variable (often when the variable is created for debugging purpose)
+- mutable member variables can be changed by a const function
+- mutable member variable may also be changed directly from a const object using '.' operator  
+-e.g:
+class A{
+	int a;
+	public:
+	mutable int b;
+	A(){a=1;b=2;}		//constructor
+	void f() const{		// const method header contains the keyword 'const' after () and before {
+		cout<<a<<" ";
+		b++;			// since b is mutable, it can be changed even inside const function
+		cout<<b<<endl;
+	}
+	const A obj1;
+	obj1.f();
+	obj1.b=10;			// since b is mutable, it can be changed even for a const object
+};
+
+https://www.geeksforgeeks.org/c-mutable-keyword/
+https://youtu.be/bP9z3H3cVMY
+
+
+----------------
+
+extern
+- The extern keyword tells the compiler that a variable is defined in another source module (outside of the current scope). 
+- The linker then finds this definition and sets up the extern variable to point to the correct location. 
+- For functions:
+	- 'extern' keyword is basically redundant for functions as they all functions are implicitly extern
+	- A function defined in a cpp file can be used in another file in the same package as long as it's declared there
+- For variables:
+	- Using extern is the only way to declare a variable but not define it
+	- extern int a;  		// is the declaration of variable a
+	  int a;				// is the declaration + defintion of variable a
+	  int a = 10; 			// is the declaration + defintion + initialization of variable a
+	  extern int a = 10; 	// is the declaration + defintion + initialization of variable a
+	- Variables described by extern statements will not have any space allocated for them, as they should be properly defined elsewhere. 
+	- If a variable is declared extern, and the linker finds no definition of it, it will throw an "Unresolved external symbol" error.
+
+https://en.wikibooks.org/wiki/C%2B%2B_Programming/Programming_Languages/C%2B%2B/Code/Keywords/extern
+https://www.geeksforgeeks.org/understanding-extern-keyword-in-c/
+
+
+----------------
+
+friend
+- friend keyword can be used for a class or a function:
+1. friend class
+	- A class 'B' can be declared as a friend class of 'A' within the definition of class 'A'
+	- All members of an object of class 'A' (even private and protected) can be accessed from members of 'B'
+2. friend function
+	- A function 'g' can be declared as a friend class of 'A' within the definition of class 'A'
+	- All members of an object of class 'A' (even private and protected) can be accessed from within g
+	- The function g can be global (friend void g(A&);) or be a member of some class 'C' (friend C::void g(A&))
+
+- e.g.:
+class A{
+	private:
+	int a;
+	friend class B;
+	friend void g(A&);
+};
+class B{
+	void f (A &objA){	// passing object of class A by reference
+		cout<<objA.a;	// can access private member of objA
+	}
+};
+void g (A &objx){	// passing object of class A by reference
+	cout<<objx.a;	// can access private member of objx
+}
+	
+https://www.geeksforgeeks.org/friend-class-function-cpp/
+
+
+----------------
+
+inline
+- The inline specifier when used in a function's declaration, makes the function to be an inline function
+- For small functions, time needed to switch control flow from caller function to callee function could be greater than time to execute the function
+- If a function is made inline, whole code of the inline function gets inserted or substituted at the point of inline function call. 
+	- This substitution is performed by the C++ compiler at compile time.  
+- inlining is just a request to the compiler. Compiler may ignore the reequest and not perform inlining if:
+	- function has for/while loops or goto/switch statements
+	- function is recursive
+	- function contains static variables	
+- e.g.:
+inline int cube(int s) 
+{ 
+    return s*s*s; 
+} 
+
+https://www.geeksforgeeks.org/inline-functions-cpp/
+https://en.cppreference.com/w/cpp/language/inline
+
+
+----------------
+
+default
+- There are two uses of default keyword:
+
+1. switch statement: as the declaration of default case label
+	- e.g.:
+	switch (x){
+		case 1:	printf("Choice is 1"); 
+				break; 
+		case 2: printf("Choice is 2"); 
+                break; 
+		default:printf("Choice other than 1 and 2"); 
+                break; 
+	}
+
+2. Explicitly defaulted functions
+	- Introduced in C++11
+	- '=default' specifier can be used at the end of function declaration to make it an 'explicitly defaulted function'
+	- This means that the compiler will now generate a default implementation of the function
+	- '=default' can only be used for functions which have default implementations, like constructor, destructor, copy constructor, etc.
+	-  Whenever we declare a parameterized constructor, the compiler won’t create a default constructor. In such a case, we can use the default specifier in order to create a default one.
+	- e.g.:
+	class A{
+		int a;
+		public:
+		A (int x) { a=x;}	// user defined constructor
+		A() = default;		// default constructor
+	}
+	A obj1;		// call to default constructor
+	A obj2(4);	// call to user defined constructor
+	
+	
+https://www.geeksforgeeks.org/explicitly-defaulted-deleted-functions-c-11/
+
+
+-----------------
+
+this
+- 'this' is a pointer to the class object which can be used inside the class definiton
+- We can't use 'this' to change the object from within a member function. 'this' can only be rvalue
+- The ‘this’ pointer is passed as a hidden argument to all nonstatic member function calls and is available as a local variable within the body of all nonstatic functions. 
+- ‘this’ pointer is not available in static member functions as static member functions can be called without any object (with class name).
+- e.g.:
+class A{
+	public:
+	int x;
+	A(int x){
+		this->x = x;
+	}
+	void deleteObject(){	// This function will delete the object
+		delelte this;		// This is not advisable. Avoid deleting the object from a member function
+	}						
+	A& returnObjectRef(){	//This function will return a reference to the object 
+		return *this;
+	}
+	// void change(A *t) {this = t;} This will result in an error as 'this' can only be rvalue
+};
+
+https://youtu.be/Z_hPJ_EhceI
+https://www.geeksforgeeks.org/this-pointer-in-c/
+
+
+-----------------
+
+new
+- new is an operator. It does the following things:
+	1. Calculates size required by the variable according to its type
+	2. Finds empty space on the heap
+	3. Allocates the memory to the variable	(internally calls malloc function for this)
+	4. Calls the constructor for the variable
+	5. Returns a pointer
+
+- e.g.: int* x = new int;		// x is a pointer to an int variable in the heap 
+		int* y = new int(4);	// y is a pointer to an int variable which is initalized to 4 using the constructor
+								// *y has value 4
+		int* z = new int[5]; 	// z is a pointer to an the start of an array of 5 ints
+								// *(z+i) or z[i] will give the value at ith index of the array, for i={0,1,2,3,4}
+		A* obj1ptr = new A;		// obj1ptr is a pointer to an object of class A. A's default constructor will be called.
+
+- Difference between:
+	>> A* obj_ptr = new A();
+	AND
+	>> A* obj_ptr = (A*) malloc(sizeof(A));
+  is that new also calls the constructor for class A
+  
+- We can also use new to specify which memory address to use. For example:
+	>> int *x = new int(4);		// x is a pointer, i.e. x is essentially a memory address
+	>> int *y = new(x) int(5); 	// 
+
+  
+https://youtu.be/NUZdUSqsCs4
+
+
+-----------------
+
+delete
+- There are two uses of delete keyword:
+
+1. As an operator (opposite of new)
+	- The delete operator calls the destructor of the object
+	- and then clears the space from the heap using the function free
+	- e.g.: delete obj1ptr;
+			delete []z;			// if z is allocated memory using [], it should be deleted using []
+			
+2. As a specifier for explicitly deleted functions (opposite of default)
+	- Introduced in C++11
+	- '=delete' specifier can be used at the end of function declaration to make it an 'explicitly deleted function'
+	- This means that the compiler will now delete the default implementation of the function
+	- '=delete' can only be used for functions which have default implementations, like constructor, destructor, copy constructor, etc.
+	-e.g.:
+	class A{
+		public:
+		int a;
+		A (const A&) = delete;				// delete the copy constructor
+		A& operator=(const A&) = delete;	// delete the copy assignment operator
+	};
+	A obj1;
+	// A obj2 = obj1; will result in error as copy assignment operator is deleted
+	// A obj3 = A(obj1); will result in error as copy constructor is deleted
+	
+https://youtu.be/NUZdUSqsCs4
+https://www.geeksforgeeks.org/explicitly-defaulted-deleted-functions-c-11/
+
+
+-----------------
+
+auto, decltype, typeid
+
+https://www.geeksforgeeks.org/type-inference-in-c-auto-and-decltype/
+
+-----------------

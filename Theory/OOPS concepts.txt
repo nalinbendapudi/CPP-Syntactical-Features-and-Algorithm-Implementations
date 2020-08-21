@@ -1,0 +1,31 @@
+Problem with procedural programming
+- All data was global. Hence not secure
+- Control flow was through function calls and goto statements
+
+OOPs:-
+
+1. Encapsulation
+Data and functions in the same class
+This also restricts access of pvt members from outside the class or its objects
+
+2. Inheritance
+2.1 Single Inheritance - Parent class --> Child class
+2.2 Multiple Inheritance - Parent class 1 --> Child class <-- Parent class 2
+2.3 Multilevel Inheritance - Parent class --> Derived class --> Child class
+2.4. Hierarchial Inheritance - Child class 1 <-- Parent class --> Child class 2
+2.5 Hybrid Inheritance - Derived class 1 <-- Parent class --> Derived class 2
+						 Derived class 1 --> Child class  <-- Derived class 2
+3. Abstraction
+Representing important features without including the background details or explanation about that feature.
+3.1.1 Physical level - Storage 
+3.1.2 Logical level - How data and functions interact
+3.1.3 User/View level - What's visible to user
+Abstraction in C++
+3.2.1 Access Specifiers: private, protected hide objects which are not necessary in the program
+3.2.2 Header files hide algorithms. User can simply call the algorithms
+
+4. Polymorphism
+4.1 Compile-time polymorphism: Method overloading - same function name but different set of arguments
+4.2 Runtime polymorphism: Method overriding - function of subclass overrides method of parent class
+
+5. Classes and Objects

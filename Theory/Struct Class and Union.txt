@@ -1,0 +1,27 @@
+Struct vs Class
+--------------------------------
+
+- All variables and functions in classes is private by default.
+- All variables and functions in structs is public by default.
+
+- Classes are inherited in private by default. 
+- Structs are inherited in public by default 
+
+Stucture Alignment rules:
+-----------------------------
+
+All variables are padded according to size of largest variable
+eg. char c1, double d, char c2 is of size (1+7)+8+(1+7) = 24. A padding of 7 bytes is given to each char
+eg. char c1, char c2, double d is of size (2+6)+8 = 16. A padding of 6 bytes is given after both chars
+
+- Usually double is stored at an address starting at a multiple of 8, int at address starting at a multple of 4, etc.
+
+- For conserving space, declare variable in struct/class in either increasing or decreasing order of sizes.
+
+Unions
+------------------------------
+
+Very crazy things
+size of a union is equal to the size of its largest variable.
+ 
+- Applications include "Type punning"

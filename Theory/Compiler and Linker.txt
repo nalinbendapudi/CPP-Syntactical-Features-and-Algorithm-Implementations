@@ -1,0 +1,15 @@
+Code(text) -------> Pre-processed file--------> Object files ---------> Execuatable files
+          pre-processor                compiler				   linker 
+ (.cpp)  ------------>   (.i)      ------------>   (.obj)    ------------>      .out
+ 
+ 
+ 
+ preprocessor: #include, #define, #if 1 #endif
+	.i is still a text file
+ 
+ each cpp file gets compiled into a seperate .bj file
+ .obj are the assembly instructions in binary format
+ some IDEs may have the option to generate .iam files which are readable assembly files
+
+build = compile +link
+linker looks for an entry point i.e. the main function
