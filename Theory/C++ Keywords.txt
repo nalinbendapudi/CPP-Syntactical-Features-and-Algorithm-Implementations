@@ -5,7 +5,7 @@ virtual
 - For a base class pointer pointing to derived class object, calling the virtual function will call the derived class function (which overrides the virtual base class function)  
 - Virtual functions are used to implement runtime polymorphism
 - Virtual functions have a cost overhead due to maintenace of vTable
-- e.g.: https://www.ideone.com/lo24zX (D:\UMich\Academics\ProgrammingPractice\CPP\virtualFunction)
+- e.g.: https://www.ideone.com/lo24zX (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/virtualFunction.cpp)
 
 https://youtu.be/oIV2KchSyGQ
 https://youtu.be/Eaz0P_gJ9FE

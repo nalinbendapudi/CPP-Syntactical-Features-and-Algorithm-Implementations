@@ -124,7 +124,7 @@ public:
 		return x==other.x && y==other.y;
 
 - We can also overload outstream operator '<<'
-	e.g.: https://www.ideone.com/la0nEf (D:\UMich\Academics\ProgrammingPractice\CPP\operatorOverloading.cpp) 
+	e.g.: https://www.ideone.com/la0nEf (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/operatorOverloading.cpp) 
 
 https://youtu.be/mS9755gF66w
 https://en.cppreference.com/w/cpp/language/operators
@@ -177,7 +177,7 @@ public:
 };
 A obj1(2);			// construcor is called
 A obj2 = obj1; 		// copy constructor is called
-A obj3(5)			// construcotr is called
+A obj3(5)			// constructor is called
 obj3 = obj1			// assignment operator does the copying. Copy constructor is NOT called
 A& objRef = obj1	// Neither constructor nor copy constructor is called.
 
@@ -251,7 +251,7 @@ Virtual functions and Virtual table
 - For a base class pointer pointing to derived class object, calling the virtual function will call the derived class function (which overrides the virtual base class function)  
 - Virtual functions are used to implement runtime polymorphism
 - Virtual functions have a cost overhead due to maintenace of vTable
-- e.g.: https://www.ideone.com/lo24zX (D:\UMich\Academics\ProgrammingPractice\CPP\virtualFunction)
+- e.g.: https://www.ideone.com/lo24zX (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/virtualFunction.cpp)
 
 Virtual Table and Virtual Pointer
 ------------------------------------
@@ -335,7 +335,7 @@ Function pointers (Functions as variables)
 	>> "cout<<f" , "cout<<&f" , "cout<<*f" all print the same thing, 
 
 https://youtu.be/p4sDgQ-jao4
-https://www.geeksforgeeks.org/function-pointer-in-c/ (D:\UMich\Academics\ProgrammingPractice\CPP\functionPointers.cpp)
+https://www.geeksforgeeks.org/function-pointer-in-c/ (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/functionPointers.cpp)
 
 
 -----------------
@@ -364,7 +364,7 @@ Multi-threading
 
 - Way to parallely run two or more functions to decrease time taken for the whole program
 - Real-world application: Load some parameters while you take input from user
-- e.g.: https://www.ideone.com/LYuTat (D:\UMich\Academics\ProgrammingPractice\CPP\multiThreading.cpp)
+- e.g.: https://www.ideone.com/LYuTat (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/multiThreading.cpp)
 
 https://youtu.be/wXBcwHwIt_I
 
