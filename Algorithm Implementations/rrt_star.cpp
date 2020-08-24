@@ -227,7 +227,7 @@ public:
 		parent.push_back(0);
 		xMap.insert({src.x,0});
 		yMap.insert({src.y,0});
-    children.push_back({});
+		children.push_back({});
 		if (src.sqDist(goal) < goalRadius*goalRadius){
 			cout<<"source is already at the goal point";
 			return;
@@ -268,7 +268,7 @@ public:
 				yMap.insert({nextNode.y,numNodes});
 				parent.push_back(parentIndex);
 				distance.push_back(distance[parentIndex] + sqrt(nodes[parentIndex].sqDist(nextNode)));
-        children.push_back({});
+				children.push_back({});
 			}
 			/*
 				Step FOUR: Choose optimal parent for nextNode from neighbouring nodes such that its distance is minimized
@@ -281,7 +281,7 @@ public:
 					}
 				}
 			}
-            children[parent[numNodes]].push_back(numNodes);
+			children[parent[numNodes]].push_back(numNodes);
 			/*
 				Step FIVE: Check if distance of any of the neighbouring nodes can be minimized if nextNode becomes their parent
 							If any such rewiring can be done for a neighbouring node, distances of all its children (and descendants) need to be updated recursively
