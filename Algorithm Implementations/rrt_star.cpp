@@ -29,6 +29,12 @@ public:
 	}
 };
 
+ostream& operator<<(ostream& stream, const Point &p){
+	// overloading out-stream operator to print Point class objects
+	stream << "(" << p.x << "," << p.y << ")" ;
+	return stream;
+}
+
 class LineSegment{
 	Point p1,p2;	//End-points of line segment
 public:
@@ -42,7 +48,7 @@ public:
 		/* Line segment defined by points p1 and p2 intersects line segment defined by other.p1 and other.p2 if and only if both of the following conditions are ture:
 			1. other.p1 and other.p2 lie on opposite sides of line defined by p1 and p2
 			2. p1 and p2 lie on opposite sides of line defined by other.p1 and other.p2
-		Above rule can't be applied if any 3 points are colinear. 
+		Above rule can't be applied if any 3 points are colinear.
 			If a point is colinear with points of the other line segment, check if it lies between the points of the other line segment
 			For example, if other.p1 is colinear with p1 and p2, check if other.p1 is in between p1 and p2
 			If points A,B,C are colinear, then B lies on line segment AC iff min(A.x,C.x)<=B.x<=max(A.x,C.x) AND min(A.y,C.y)<=B.y<=max(A.y,C.y)
@@ -51,7 +57,7 @@ public:
 		double diff2 = (other.p2.y - p1.y) * (p2.x - p1.x) - (other.p2.x - p1.x) * (p2.y - p1.y);	// other.p2 w.r.t. line p1-p2
 		double diff3 = (p1.y - other.p1.y) * (other.p2.x - other.p1.x) - (p1.x - other.p1.x) * (other.p2.y - other.p1.y);	// p1 w.r.t. line other.p1-other.p2
 		double diff4 = (p2.y - other.p1.y) * (other.p2.x - other.p1.x) - (p2.x - other.p1.x) * (other.p2.y - other.p1.y);	// p2 w.r.t. line other.p1-other.p2
-		
+
 		if (diff1==0){			// other.p1 is colinear with p1 and p2
 			if( min(p1.x,p2.x) <= other.p1.x && other.p1.x <= max(p1.x,p2.x) && min(p1.y,p2.y) <= other.p1.y && other.p1.y <= max(p1.y,p2.y))
 				return true;	// other.p1 lies between p1 and p2
@@ -72,13 +78,13 @@ public:
 			return false;
 		// no 3 points are colinear
 		return (diff1 > 0)^(diff2 > 0) && (diff3 > 0)^(diff4 > 0);	// Condition 1 AND Condition 2 from above
-		
+
 	}
 	bool pointOnLineSegment(const Point &p) const{
 		if((p.y - p1.y) * (p2.x - p1.x) - (p.x - p1.x) * (p2.y - p1.y) == 0){
 			if( min(p1.x,p2.x) <= p.x && p.x <= max(p1.x,p2.x) && min(p1.y,p2.y) <= p.y && p.y <= max(p1.y,p2.y)){
 				return true;
-			}	
+			}
 		}
 		return false;
 	}
@@ -87,11 +93,11 @@ public:
 class Environment{
 	int searchSpace_x; 		// Width of 2D search space
 	int searchSpace_y;		// Heigh of 2D search space
-	
+
 	vector<LineSegment> obstacles;	// Data structure to store obstacles (Obstacles are modeled as line-segments)
-	
-	uniform_real_distribution<double> uniform01Distr = uniform_real_distribution<double>(0,1);	// Uniform Random number generator	
-	
+
+	uniform_real_distribution<double> uniform01Distr = uniform_real_distribution<double>(0,1);	// Uniform Random number generator
+
 public:
 	Environment(int x, int y) : searchSpace_x(x), searchSpace_y(y){
 	}
@@ -104,7 +110,7 @@ public:
 	void addObstacles (double x1, double y1, double x2, double y2){	// overloaded function to add obstacles
 		obstacles.push_back(LineSegment(x1,y1,x2,y2));
 	}
-	bool collisionCheck (const LineSegment &ls) const{			// returns true if ls intersects with any of the obstacles	
+	bool collisionCheck (const LineSegment &ls) const{			// returns true if ls intersects with any of the obstacles
 		for (auto obstacle : obstacles){
 			if (obstacle.intersects(ls)){
 				return true;
@@ -138,18 +144,18 @@ class RRT {
 	double nbdSize;			// The neighbourhood from which parent is chosen is a square with side-length='nbdSize'*2. nbdSize should be greater than stepSize
 	double goalRadius;		// The goal is a circle of radius='goalRadius' centered at the goal-point
 	double goalBias;		// number between 0 and 1. Probability with which next node is chosen in the direction of the goal
-	
+
 	// Data structures to store nodes (Nodes are modeled as points)
-	vector<Point> nodes;	
+	vector<Point> nodes;
 	vector<int> parent;				// parent[i] contains the index (in the vector: nodes) of the parent of the node at nodes[i]
 	vector<vector<int>> children;	// children[i] contains a vector of indices of the the direct children of node at nodes[i]
 	vector<double> distance;		// distance[i] contains the distance (fromsource node) of the node at nodes[i]
 	map<double,int> xMap;			// stores x-ccordinates of nodes in sorted order, so that nearest node can be found is O(logn) time
 	map<double,int> yMap;			// stores y-ccordinates of nodes in sorted order, so that nearest node can be found is O(logn) time
-	
+
 	int nearestNodeIndex(const Point &p){
 		// This is an O(n) method. This should be replaced with O(logn) method using balanced kd-tree
-		int minIndex=0; 
+		int minIndex=0;
 		double minDist = p.sqDist(nodes[0]);
 		for (int i=1; i<nodes.size(); i++){
 			double dist = p.sqDist(nodes[i]);
@@ -160,35 +166,36 @@ class RRT {
 		}
 		return minIndex;
 	}
-	
+
 	vector<int> neighbourNodeIndices (const Point &p){
 		double min_x = p.x - nbdSize;
 		double max_x = p.x + nbdSize;
 		double min_y = p.y - nbdSize;
 		double max_y = p.y + nbdSize;
-		
+
 		unordered_set<int> xSet, ySet;
 		map<double,int>::iterator it_low,it_high;
 		vector<int> neighbours;
-		
+
 		it_low = xMap.lower_bound(min_x);
 		it_high = xMap.upper_bound(max_x);
 		for(auto it=it_low; it!=it_high; it++){
 			xSet.insert(it->second);
-		}	
+		}
 		it_low = yMap.lower_bound(min_y);
 		it_high = yMap.upper_bound(max_y);
 		for(auto it=it_low; it!=it_high; it++){
 			ySet.insert(it->second);
 		}
-		for (int i : xSet){
-			if(ySet.find(i)!=ySet.end())
-				neighbours.push_back(i);
+		for (auto itr = xSet.begin(); itr != xSet.end(); itr++) {
+            if(ySet.find(*itr)!=ySet.end()){
+					neighbours.push_back(*itr);
+				}
 		}
-		return neighbours;
+        return neighbours;
 	}
-	
-	void printAncestory(const int targetIndex){		
+
+	void printAncestory(const int targetIndex){
 		// Prints hiearchy from source (index=0 in nodes vector) to targetIndex
 		stack<int> s;
 		int index = targetIndex;
@@ -196,13 +203,13 @@ class RRT {
 			s.push(index);
 			index = parent[index];
 		}
-		cout<<0;
+		cout<<0<<" "<<nodes[0]<<endl;
 		while(!s.empty()){
-			cout<<" --> "<<s.top();
+			cout<<" --> "<<s.top()<<" "<<nodes[s.top()]<<endl;
 			s.pop();
 		}
 	}
-	
+
 	void updateChildrenDistances(int index){
 		// This function will be called after the 'distance' of a node is updated, so that the 'distance's of the node's  descendants could also be updated accordingly
 		for (int child : children[index]){
@@ -210,7 +217,7 @@ class RRT {
 			updateChildrenDistances(child);
 		}
 	}
-	
+
 public:
 	RRT(double stepSize, double nbdSize, double goalRadius, double goalBias) : stepSize(stepSize), nbdSize(nbdSize), goalRadius(goalRadius), goalBias(goalBias){
 	}
@@ -219,10 +226,15 @@ public:
 		distance.push_back(0);
 		parent.push_back(0);
 		xMap.insert({src.x,0});
-		yMap.insert({src.y,0});		
+		yMap.insert({src.y,0});
+    children.push_back({});
 		if (src.sqDist(goal) < goalRadius*goalRadius){
 			cout<<"source is already at the goal point";
 			return;
+		}
+		else{
+			cout<<"source (Node 0) at "<<src<<endl;
+            cout<<"Goal is at "<<goal<<endl;
 		}
 		bernoulli_distribution bernoulli01Distr(goalBias);
 		int numNodes = 0;
@@ -256,6 +268,7 @@ public:
 				yMap.insert({nextNode.y,numNodes});
 				parent.push_back(parentIndex);
 				distance.push_back(distance[parentIndex] + sqrt(nodes[parentIndex].sqDist(nextNode)));
+        children.push_back({});
 			}
 			/*
 				Step FOUR: Choose optimal parent for nextNode from neighbouring nodes such that its distance is minimized
@@ -268,7 +281,7 @@ public:
 					}
 				}
 			}
-			children[parent[numNodes]].push_back(numNodes);
+            children[parent[numNodes]].push_back(numNodes);
 			/*
 				Step FIVE: Check if distance of any of the neighbouring nodes can be minimized if nextNode becomes their parent
 							If any such rewiring can be done for a neighbouring node, distances of all its children (and descendants) need to be updated recursively
@@ -282,7 +295,7 @@ public:
 					}
 				}
 			}
-			/*
+            /*
 				Step SIX: Break from the loop if nextNode is within 'goalRadius' distance to the goal
 			*/
 			if(nextNode.sqDist(goal) < goalRadius*goalRadius){
@@ -300,8 +313,10 @@ public:
 int main(){
 	int windowX = 500, windowY = 500;
 	Environment env(windowX,windowY);
+
+/* // GENERATE RANDOM OBSTACLES, SOURCE AND DESTINATION
 	int numObstacles = 5;
-	for (int i=0; i<numObstacles; i++){		
+	for (int i=0; i<numObstacles; i++){
 		env.addObstacles(env.genRandomLineSegment());	// Creating random obstacles
 	}
 	Point src = env.genRandomPoint();
@@ -310,8 +325,20 @@ int main(){
 	Point goal = env.genRandomPoint();
 	while(env.collisionCheck(goal))		// If random goal point lies on any of the obstacles, generate another random point
 		goal = env.genRandomPoint();
+*/
+	// Rectangular Obstacle in the middle of the window
+	env.addObstacles(LineSegment(100,100,100,400));
+	env.addObstacles(LineSegment(100,400,400,400));
+	env.addObstacles(LineSegment(400,400,400,100));
+	env.addObstacles(LineSegment(400,100,100,100));
+	// Source and Goal at diagonally opposite ends
+	Point src(50,50);
+	Point goal(450,450);
+	// Hyper-parameters:
 	double stepSize = 5, nbdSize = 10, goalRadius = 1, goalBias = 0.1;
+
 	RRT rrtObj(stepSize, nbdSize, goalRadius, goalBias);
 	rrtObj.rrt_star(src,goal,env);
+
 	return 0;
 }
