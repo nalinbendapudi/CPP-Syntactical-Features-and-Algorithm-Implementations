@@ -301,8 +301,8 @@ public:
 			if(nextNode.sqDist(goal) < goalRadius*goalRadius){
 				cout<<"Goal reached !!"<<endl;
 				cout<<"Total Number of Nodes generated: "<<numNodes<<endl;
-				cout<<"Distance of path from source to goal: "<<distance[numNodes];
-				cout<<"Indices of the nodes in the shortest path from source to goal:\n";
+				cout<<"Distance of path from source to goal: "<<distance[numNodes]<<endl;
+				cout<<"Nodes in the shortest path from source to goal:\n";
 				printAncestory(numNodes);
 				break;
 			}
