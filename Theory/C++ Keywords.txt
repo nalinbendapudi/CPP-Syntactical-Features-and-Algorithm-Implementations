@@ -135,7 +135,7 @@ extern
 - The extern keyword tells the compiler that a variable is defined in another source module (outside of the current scope). 
 - The linker then finds this definition and sets up the extern variable to point to the correct location. 
 - For functions:
-	- 'extern' keyword is basically redundant for functions as they all functions are implicitly extern
+	- 'extern' keyword is basically redundant for functions as all functions are implicitly extern
 	- A function defined in a cpp file can be used in another file in the same package as long as it's declared there
 - For variables:
 	- Using extern is the only way to declare a variable but not define it
@@ -188,7 +188,7 @@ inline
 - For small functions, time needed to switch control flow from caller function to callee function could be greater than time to execute the function
 - If a function is made inline, whole code of the inline function gets inserted or substituted at the point of inline function call. 
 	- This substitution is performed by the C++ compiler at compile time.  
-- inlining is just a request to the compiler. Compiler may ignore the reequest and not perform inlining if:
+- inlining is just a request to the compiler. Compiler may ignore the request and not perform inlining if:
 	- function has for/while loops or goto/switch statements
 	- function is recursive
 	- function contains static variables	

@@ -124,7 +124,7 @@ public:
 		return x==other.x && y==other.y;
 
 - We can also overload outstream operator '<<'
-	e.g.: https://www.ideone.com/la0nEf (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/operatorOverloading.cpp) 
+	e.g.: https://www.ideone.com/la0nEf (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/operatorOverloading.cpp ) 
 
 https://youtu.be/mS9755gF66w
 https://en.cppreference.com/w/cpp/language/operators
@@ -251,7 +251,7 @@ Virtual functions and Virtual table
 - For a base class pointer pointing to derived class object, calling the virtual function will call the derived class function (which overrides the virtual base class function)  
 - Virtual functions are used to implement runtime polymorphism
 - Virtual functions have a cost overhead due to maintenace of vTable
-- e.g.: https://www.ideone.com/lo24zX (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/virtualFunction.cpp)
+- e.g.: https://www.ideone.com/lo24zX (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/virtualFunction.cpp )
 
 Virtual Table and Virtual Pointer
 ------------------------------------
@@ -261,7 +261,7 @@ Virtual Table and Virtual Pointer
 4. vTable is basically a static array of function pointers. Each element of the array points to the address of a virtual function
 5. For a derived class vTable:
 	5.1 Address of base class function is stored if the function hasn't been overridden in the derived class
-	5.2 Address of derived class function is stored if the function hasn been overridden in the derived class
+	5.2 Address of derived class function is stored if the function has been overridden in the derived class
 6. Each object (of classes which have a vTable) has a hidden variable: vPtr, which points to the vTable
 
 https://youtu.be/oIV2KchSyGQ
@@ -330,13 +330,12 @@ Function pointers (Functions as variables)
 	OR
 	>> auto v_f = f;
 - Now since v_f is a variable, it can be passed as a parameter to another function
-- e.g.: https://www.ideone.com/aUqkAB
+- e.g.: https://www.ideone.com/aUqkAB (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/functionPointers.cpp )
 - Note: A function's address can be accessed using its name (no use &).
 	>> "cout<<f" , "cout<<&f" , "cout<<*f" all print the same thing, 
 
 https://youtu.be/p4sDgQ-jao4
-https://www.geeksforgeeks.org/function-pointer-in-c/ (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/functionPointers.cpp)
-
+https://www.geeksforgeeks.org/function-pointer-in-c/ 
 
 -----------------
 
@@ -364,7 +363,7 @@ Multi-threading
 
 - Way to parallely run two or more functions to decrease time taken for the whole program
 - Real-world application: Load some parameters while you take input from user
-- e.g.: https://www.ideone.com/LYuTat (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/multiThreading.cpp)
+- e.g.: https://www.ideone.com/LYuTat (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/multiThreading.cpp )
 
 https://youtu.be/wXBcwHwIt_I
 

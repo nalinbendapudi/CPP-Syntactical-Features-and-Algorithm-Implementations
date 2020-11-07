@@ -3,10 +3,10 @@ STACK - functions and function variables.
 	When a function is called, it is added to the stack. And all its variables are added to the stack as and when they're declared
 	When the function returns, all variables go 'out of scope', i.e. they're removed from stack		
 ------------------------------------------------------------------------------------------------------------------------
-HEAP - dynamically allocated variables - declared using keyword 'static' or 'global' 
+HEAP - dynamically allocated variables- allocated using 'new' and deallocated using 'delete'
+				   - OR 'malloc' to allocate and 'free' to deallocate 
 ------------------------------------------------------------------------------------------------------------------------
-DATA - global and static variables - allocated using 'new' and deallocated using 'delete'
-				   - OR 'malloc' to allocate and 'free' to deallocate
+DATA - global and static variables  - declared using keyword 'static' or 'global'
 ------------------------------------------------------------------------------------------------------------------------
 TEXT - the executable code
 ------------------------------------------------------------------------------------------------------------------------

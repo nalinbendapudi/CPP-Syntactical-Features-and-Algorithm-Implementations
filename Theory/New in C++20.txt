@@ -1,0 +1,60 @@
+https://youtu.be/ImLFlLjSveM
+
+-------------------------------------------------------------------
+
+Co-routines
+
+https://mariusbancila.ro/blog/2020/06/22/a-cpp20-coroutine-example/
+co-yield
+co-await
+co-return
+
+--------------------------------------------------------------------
+
+requires
+
+https://akrzemi1.wordpress.com/2020/03/26/requires-clause/
+
+
+--------------------------------------------------------------------
+
+ranges
+
+Instead of writing 		std::sort(v.begin(), v.end());
+We can now write :		std:: ranges::sort(v);
+
+If we want to sort by some member variable of a class/struct:
+
+struct User{
+		std::string name;
+		int age;
+	};
+std::vector<User> users = {/*  .,.,.,.,. */}
+	
+//Earlier:	
+
+	auto sort_by_age = [](auto& lhs, auto& rhs){	// We have to write a lambda as comparator
+		return lhs.age < rhs.age;
+	};
+		
+	std::sort(users.begin(), users.end(), sort_by_age);
+	
+//Now:
+	
+	std::ranges::sort(users, &User::age);
+
+----------------------------------------------------------------------
+
+modules
+
+Modules are stored in <filename>.cppm
+After compiling it becomes <filename>.bmi
+
+only functions marked as "export" can be used on other files
+modules are included in other files using the keyword "import"
+
+This is better than #including header files as:
+	this doesn't just copy paste
+	#defines don't creep in or out of these files
+	we can select which functions to import/export. We need not export the helper functions
+	
