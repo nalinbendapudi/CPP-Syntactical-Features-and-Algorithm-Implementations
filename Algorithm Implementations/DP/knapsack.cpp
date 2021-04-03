@@ -1,22 +1,32 @@
+// Implementation of 0-1 Knapsack Algorithm
+/* Problem: Given n objects of specified weights[] and values[], we want to select <=n objects such that: 
+	 1. their total weight is less than max_weight
+	 2. the sum of their values is maximised
+*/
+
 #include<iostream>
 #include<vector>
 
 using namespace std;
 
 double knapsack(double max_weight, double weights[], double values[], int n){
+	
 	// Dynamic Programming solution doesn't work for non-integer max_weight
 	int W = (int)max_weight;
+	
 	vector<vector<double> > a(n+1,vector<double>(W+1));
+	// a[i][j] is the max value we can obtain if we only consider objects {0,2,...i-1} and the sum of weights should be less than j
+	
 	for (int i=0; i<=n; i++)
 		a[i][0] = 0;
 	for (int j=0; j<=W; j++)
 		a[0][j] = 0;
 	for (int i=1; i<=n; i++){
 		for (int j=1; j<=W; j++){
-			if (values[i]>W)
+			if (weights[i-1]>j)
 				a[i][j] = a[i-1][j];
 			else
-				a[i][j] = max(a[i-1][j],values[i-1]+a[i-1][j-weights[i-1]]);
+				a[i][j] = max( a[i-1][j], values[i-1] + a[i-1][j-weights[i-1]] );
 		}
 	}
 	double maxVal = a[n][W];	

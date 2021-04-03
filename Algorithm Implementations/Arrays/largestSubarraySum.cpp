@@ -2,6 +2,9 @@
 #include <vector> 
 using namespace std;
 
+// Given an array, find the largest sub-array sum 
+// Array can contain negative numbers (otherwise largest subarray sum is equal to array sum)
+
 int largestSubarraySum (const vector<int> &v){
     int sum = 0, maxSum = 0;
     for(int i=0; i<v.size(); i++){

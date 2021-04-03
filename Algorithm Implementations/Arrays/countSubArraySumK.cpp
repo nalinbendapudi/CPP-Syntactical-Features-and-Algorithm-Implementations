@@ -1,6 +1,5 @@
-// Count number of continous sub-arrays whose sum is K
-// This is same as counting number of pairs of elements with a difference of K 
-//  ... in the cumulative sum array.
+// Count number of sub-arrays whose sum is K
+// This is same as counting number of pairs of elements with a difference of K in the cumulative sum array.
 // We store the cumulative sums in a hash map.
 
 #include<iostream>
