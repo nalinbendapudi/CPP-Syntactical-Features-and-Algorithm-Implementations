@@ -7,7 +7,7 @@ Code(text) -------> Pre-processed file--------> Object files ---------> Execuata
  preprocessor: #include, #define, #if 1 #endif
 	.i is still a text file
  
- each cpp file gets compiled into a seperate .bj file
+ each cpp file gets compiled into a seperate .obj file
  .obj are the assembly instructions in binary format
  some IDEs may have the option to generate .iam files which are readable assembly files
 

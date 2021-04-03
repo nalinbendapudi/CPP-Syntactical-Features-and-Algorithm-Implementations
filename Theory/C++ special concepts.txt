@@ -1,41 +1,369 @@
 ----------------
 
+Enumerators
+- enums define a custom data type (like classes and structs)
+- enum contains a list of variables that are sequentially mapped to integers starting with 0
+- e.g.:
+enum Food{
+	Lunch
+	Dinner
+};
+cout<<Lunch;				// prints 0
+Food Breakfast = (Food)2;	// type conversion of int to Food
+cout<<Breakfast;			// prints 2
+
+https://www.geeksforgeeks.org/enumerated-types-or-enums-in-c/
+
+
+----------------
+
+Unions
+- Unions are data types much like struct and class.
+- Size of union is equal to the size of the largest data member. Other data members are sort of references to the largest data member (diff variable names for the same address)
+- Unions can be anonymous. We may not name them. (Actually even structs can be nameless.) Anonymous structs and unions are usually used within other class/struct/union just to provide structure the data members
+- e.g.:
+union A{
+	float f;	// Both float and int are 4 bytes
+	int a;
+};
+A obj;
+obj.f = 2; 		// float f=2 is stored in binary as: 01000000000000000000000000000000 (look at how float are stored in binary: https://www.keil.com/support/man/docs/c51/c51_ap_floatingpt.htm )
+cout<<obj.a;	// prints 1073741824 since decimal conversion of 01000000000000000000000000000000 is 1073741824
+
+https://youtu.be/6uqU9Y578n4 (Realistic application of unions, example for anonymous unions)
+https://www.geeksforgeeks.org/difference-structure-union-c/ (Difference between struct and union)
+
+
+----------------
+
+Type Punning vs Type Casting:
+
+- Type casting is conversion from one type to another. Value remains same unless a larger size type variable is down-casted to a smaller size type.
+- Casting can be done from bigger size to smaller size (double to int) or smaller size to bigger size (int to double) 
+- Note: Some type casts may not be allowed. For instance, we can't cast an object of a custom type to an int or a float
+- e.g.:
+float f = 2;
+int a1 = (int)f; 	// explicit type casting (we tell the compiler to cast f into an int)
+int a2 = f;			// implicit type casting (compiler decides that f should be casted into an int)
+cout<<a1<<" "<<a2;	// prints "2 2"
+
+- Type punning is converting the memory address of one type to another.
+-e.g.:
+float f = 2;
+int a = *(int *)&f;		// Converting a float pointer to an int pointer. And then derferncing it
+cout<<a;				// Prints 1073741824 ( this is similar to the union example )
+
+https://youtu.be/pWZS1MtxI-A (Type casting)
+https://youtu.be/8egZ_5GA9Bc (Type punning)
+
+
+----------------
+
+C vs C++ style casting
+
+>> float f =3; int a = (int)f;  is C style casting.
+C++ has additional syntax which we may want to follow to maintain good code.  C++ also supports C style casting
+C++ has 4 types of casting operators
+
+1. static_cast<target_type>(expression)
+		This is compile-time casting. Same as C style cast. 
+		If cast isn't valid, a compiler error is generated
+2. dynamic_cast<target_type>(expression)
+		This is run-time casting. It performs cast on polymorphic types
+		Base* pointer can be dynamic_cast into a Derived* pointer only if the Base* pointer points to a Derived class object
+		If cast isn't valid, a null value is returned
+3. reinterpret_cast<target_type>(expression)
+		This is same as type punning. Converts a pointer to another type of pointer
+4. const_cast<target_type>(expression)
+		This is used explicitly override const and/or volatile in a cast
+		The target type must be the same as the source type except for the alteration of its const or volatile attributes
+
+https://youtu.be/pWZS1MtxI-A
+
+
+----------------
+
 Templates
+
+- The idea is to pass a data type as a parameter to class or a function, so that the same code need not be written for all data types
+- For instance, a separate sort function can be written for ints, floats, chars, etc. or a single sort function can be written for any abstract data type
+- Templates are expanded at compile time (similar to macros)
+- e.g.:
+template <typename T>	// we can also write template<class T>
+T Add(T x, T y){
+	return x+y;
+}
+int a = Add<int>(3,5); 
+double b = Add<double>(3.2,5.4);
+
+- Templates need not just define data types. They can also define numbers
+- e.g.:
+template< typename T, int N>
+class Array{
+	T arr[N];
+};
+Array<int,5> arrayObj;		// arrayObj is object of the class Array<int,5> which contains an array of 5 ints
+							// T arr[N] is channged to int arr[5] at compile-time
+
+https://youtu.be/I-hZkUa9mIs
+http://www.cplusplus.com/doc/oldtutorial/templates/
+https://www.geeksforgeeks.org/templates-cpp/
+
 
 ----------------
 
 Operator Overloading
 
+- Almost all operators can be overloaded in C++
+- The operators :: (scope resolution), . (member access), .* (member access through pointer to member), and ?: (ternary conditional) cannot be overloaded.
+- e.g.:
+class Vector2{
+public:
+	float x,y;
+	bool operator==(Vector2 other){
+		return x==other.x && y==other.y;
+
+- We can also overload outstream operator '<<'
+	e.g.: https://www.ideone.com/la0nEf (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/operatorOverloading.cpp ) 
+
+https://youtu.be/mS9755gF66w
+https://en.cppreference.com/w/cpp/language/operators
+
+
+----------------
+
+Copying in C++ (Shallow copy vs Deep copy)
+
+- In C++, copying using assignment operator copies the value of a variable into the other variable.
+	>> int a=3;
+	>> int b=a;		// right side of assignment operator can be lvalue or rvalue. Here it is an lvalue
+	>> a=10;
+	>>cout<<b;		// This will still return 3 since value of b is 3
+
+- In case of references, nothing is copied. Reference variable is just an alias (a different name for the same object)
+	>> int a = 3;
+	>> int &b = a;		// right side of assignment operator can onnly be lvalue for a ref variable (int &b = 5 is not allowed)
+	>> a = 10;
+	>> cout b;			// This will print 10. When a is changed, b is also changed
+
+- In case of pointers, assignment operator copies the value of the pointer, i.e. the memory address of the variable it is pointing to
+	>> int *p = new int(5);
+	>> int *q = p;			// q and p now have the same memory address (This is SHALLOW COPY)
+	>> cout<<*q;			// This will print 5
+	>> delete p;
+	>> delete q;			// This will result in an Runtime error as the memory address contained in p (and in q) has already been freed in the previous statement
+- This is why we need to define a custom copy constructor for classes which have pointer data members. If we don't, the destructor of the class might attempt to free the same memory address twice
+- DEEP COPY of pointer variables:
+	>> int *p = new int (5);
+	>> int *q = new int (*p);
+
+https://youtu.be/BvR1Pgzzr38
+https://www.geeksforgeeks.org/copy-constructor-in-cpp/
+
+
 ----------------
 
 Copy constructor
+
+- User-defined copy constructor is required when atleast one of the class data members is a pointer
+- Copy constructor syntax:
+class A{
+public:
+	int a;
+	A(int x) : a(x) {}	// Constructor (using M.I.L.)
+	A(const A& other){	// Copy constructor (Just like the constructor, Copy constructor also doesn't have a return type, and name of the function is name of the class)
+		a = other.a;
+	}
+};
+A obj1(2);			// construcor is called
+A obj2 = obj1; 		// copy constructor is called
+A obj3(5)			// constructor is called
+obj3 = obj1			// assignment operator does the copying. Copy constructor is NOT called
+A& objRef = obj1	// Neither constructor nor copy constructor is called.
+
+- Objects are passed by reference to the Copy Constructor, because passing by value would require a copy of the object to be passed. 
+  This will again require the copy constructor to be called and lead to infinite recursive call to the copy constructor. Hence compiler doesn't allow passing by value to copy c'tor
+  When variables are passed by reference to avoid copying, but we don't want to change the variable in the function, we gernerally pass a const reference, as in the case of copy c'tor
+
+https://youtu.be/BvR1Pgzzr38
+https://www.geeksforgeeks.org/copy-constructor-in-cpp/
+
 
 ----------------
 
 Member Initializer List
 
+- Member Initializer List is used in the header of a constructor to initialize the class member variables
+- The member variables should be initialized in the order they were declared. (VERY IMPORTANT!!)
+- Normally, if we use assignment operator ('=') to 'initialize' a member variable, we are actually assigning a new value to something that's already initialized by a default or garbage value.
+- M.I.L. is a way to truly initialize data members
+- e.g.:
+class A{
+	int x, y, z;
+	public:
+	A(int a, int b) : x(a), y(b), z(0) {	// member initializer list (ORDER OF VARIABLES SHOULD BE SAME AS IN CLASS DEFINITION) 
+		cout<<"initialized x to "<<a<<",y to "<<b<<" and z to 0"<<endl;
+	}
+};
+
+- Consts and references should be initialized when they are declared. M.I.L. is the only way to initialize const data members and reference members
+- e.g.:
+class A{
+	public:
+	const int a;		// Without M.I.L., this will considered uninitialized const variable, hence would raise a compile error
+	int& b;				// Without M.I.L., this will considered uninitialized refernce variable, hence would raise a compile error
+	const int a2 = 3;	// This initialization is not even done when M.I.L. is used
+	A(int& x):a(5), b(x), a2(5){}	// We can even change value of const int a2 !!
+};
+int x = 10; A obj(x);
+
+https://youtu.be/1nfuYMXjZsA
+https://www.geeksforgeeks.org/when-do-we-use-initializer-list-in-c/
+
 ----------------
 
 Calling Base class constructor
+
+- All member variables and functions of base class become members of derived class
+- Private members of base class can't be accessed through the member functions of the derived class
+- In order to initialize/update private members of base class (which are now inherited into the derived class), we can call public functions of the base class
+- e.g.:
+class Base{
+	int a;
+	public:
+	Base(int a): a(a) {}		//using member initializer list
+	void show(){cout<<a;}
+};
+class Derived : public Base{
+	public:
+	Derived(int a): Base(a) {}		// calling base class constructor
+	void show(){Base::show();}		// calling base class functions
+};
+
+https://stackoverflow.com/a/15777735
+
 
 ----------------
 
 Virtual functions and Virtual table
 
+- 'virtual' keyword is used to indicate that a base class member function is a virtual function
+- For a base class pointer pointing to derived class object, calling the virtual function will call the derived class function (which overrides the virtual base class function)  
+- Virtual functions are used to implement runtime polymorphism
+- Virtual functions have a cost overhead due to maintenace of vTable
+- e.g.: https://www.ideone.com/lo24zX (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/virtualFunction.cpp )
+
+Virtual Table and Virtual Pointer
+------------------------------------
+1. For every class which has at least one virtual method (including the inherited methods), we need a vTable
+2. Every such class has a different vTable
+3. vTable is created for the class regardless of whether the class has any objects
+4. vTable is basically a static array of function pointers. Each element of the array points to the address of a virtual function
+5. For a derived class vTable:
+	5.1 Address of base class function is stored if the function hasn't been overridden in the derived class
+	5.2 Address of derived class function is stored if the function has been overridden in the derived class
+6. Each object (of classes which have a vTable) has a hidden variable: vPtr, which points to the vTable
+
+https://youtu.be/oIV2KchSyGQ
+https://youtu.be/Eaz0P_gJ9FE
+https://www.geeksforgeeks.org/virtual-function-cpp/
+
+
 ----------------
 
-Interfaces
+Virtual Destructor
+
+- e.g.:
+class Base{
+public:
+	Base(){cout<<"Base constructor ";}
+	~Base(){cout<<"Base destructor ";}
+};
+class Derived : public Base{
+public:
+	Derived(){cout<<"Derived constructor ";}
+	~Derived(){cout<<"Derived destructor ";}
+};
+Base* p = new Derived;
+delete p;
+
+Output of this program is: "Base constructor Derived constructor Base destructor"
+Derived destructor isn't called. So the derived class member variables (which aren't inherited from Base) are never destroyed, leading to memory leaks
+Solution: Make the Base class destructor virtual
+
+https://youtu.be/jELbKhGkEi0
+
 
 ----------------
+
+Interfaces (Pure Virtual Functions)
+
+- It's a way to force the derived class to define a virtual function declared in the base class
+- Interface is a class that only contains un-implemented virtual methods 
+- The base class (interface) can't be instantiated.
+- e.g.:
+class Base{
+	public:
+	virtual void PrintName() = 0;	// This declares the virtual function as 'pure' and forces derived class to define it
+};
+classe Derived : public Base{
+	public:
+	void PrintName() override {
+		cout<<"Derived";
+	}
+};
+// Base b;						will lead to an error
+// Base* bptr = new Base;		will lead to an error
+Base* dptr = new Derived;  	
+dptr->PrintName();
+
+https://youtu.be/UWAdd13EfM8
+
+----------------
+
+Function pointers (Functions as variables)
+
+- Function is also stored at some address like a variable. We can treat that address as that of a variable. (Much like type punning)
+- If we have a function 'f' that takes two ints and returns an int with header 'int f (int x, int y)', and we want to store it in a variable 'v_f':
+	>> int(*v_f)(int,int) = f;
+	OR
+	>> auto v_f = f;
+- Now since v_f is a variable, it can be passed as a parameter to another function
+- e.g.: https://www.ideone.com/aUqkAB (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/functionPointers.cpp )
+- Note: A function's address can be accessed using its name (no use &).
+	>> "cout<<f" , "cout<<&f" , "cout<<*f" all print the same thing, 
+
+https://youtu.be/p4sDgQ-jao4
+https://www.geeksforgeeks.org/function-pointer-in-c/ 
+
+-----------------
 
 Lambda functions
 
+- Without declaring (and defining) a function first, and then converting it into a variable, we can directly declare (and define) a function object called a lambda
+- Most common syntax: [captures](params){function_body}
+	- 'captures' lists the variables (in the scope in which lambda is being defined) that are used in the 'function_body'
+		- [&] captures all variables in the scope by reference
+		- [=] captures all variables in the scope by value
+		- [a,&b] captures a by value and b by reference
+	- 'params' are the function parameters
+- e.g.: 
+int x =5;
+auto greaterThanXplusY = [x](int y, int z) { return z > x+y; };
+bool b = greaterThanXplusY(3, 10);
+
+https://youtu.be/mWgmBBz0y8c
+https://en.cppreference.com/w/cpp/language/lambda
+
+
 ----------------
 
-Functions as variables
+Multi-threading
+
+- Way to parallely run two or more functions to decrease time taken for the whole program
+- Real-world application: Load some parameters while you take input from user
+- e.g.: https://www.ideone.com/LYuTat (https://github.com/nalinbendapudi/CPP-Syntactical-Features-and-Algorithm-Implementations/blob/master/CPP%20concepts%20Illustrative%20Codes/multiThreading.cpp )
+
+https://youtu.be/wXBcwHwIt_I
 
 ----------------
-
-Function pointers
-
------------------
