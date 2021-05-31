@@ -2,12 +2,13 @@
 #include <queue>
 #include <vector>
 
+using namespace std;
 
 typedef pair<int,int> coord;
 
 ostream& operator<<(ostream& stream, const coord& p){
-    cout<<"("<<p.first<<","<<p.second<<")";
-    return cout;
+    stream<<"("<<p.first<<","<<p.second<<")";
+    return stream;
 }
 
 class Cell{

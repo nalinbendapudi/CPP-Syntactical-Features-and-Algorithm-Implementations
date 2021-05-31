@@ -2,7 +2,7 @@
 #include <deque> 
 using namespace std;
 
-// Given an n-element array. Output an array containing maximums of k-elem subarrays. Out size should be n-k+1
+// Given an n-element array. Output an array containing maximums of k-elem subarrays. Output size should be n-k+1
 
 void printKMax(int arr[], int n, int k){
 	deque <int> q;

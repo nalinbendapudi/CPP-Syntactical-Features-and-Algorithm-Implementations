@@ -138,13 +138,13 @@ Copying in C++ (Shallow copy vs Deep copy)
 	>> int a=3;
 	>> int b=a;		// right side of assignment operator can be lvalue or rvalue. Here it is an lvalue
 	>> a=10;
-	>>cout<<b;		// This will still return 3 since value of b is 3
+	>> cout<<b;		// This will still return 3 since value of b is 3
 
 - In case of references, nothing is copied. Reference variable is just an alias (a different name for the same object)
 	>> int a = 3;
 	>> int &b = a;		// right side of assignment operator can onnly be lvalue for a ref variable (int &b = 5 is not allowed)
 	>> a = 10;
-	>> cout b;			// This will print 10. When a is changed, b is also changed
+	>> cout<<b;			// This will print 10. When a is changed, b is also changed
 
 - In case of pointers, assignment operator copies the value of the pointer, i.e. the memory address of the variable it is pointing to
 	>> int *p = new int(5);

@@ -333,3 +333,53 @@ auto, decltype, typeid
 https://www.geeksforgeeks.org/type-inference-in-c-auto-and-decltype/
 
 ------------------
+
+NULL and nullptr
+- nullptr is explicitly defined as a pointer type (‘std::nullptr_t’). Its a prvalue or pure rvalue (prvalue doesn't have an address, like true or false).
+- NULL can be pointer or 0.
+- e.g.:
+	void f(int *ptr){cout<<"pointer input\n";}
+	void f(int var){cout<<"variable input\n";}
+	int main(){
+		f(nullptr);	 // Outputs "pointer variable"
+		// f(NULL);  // Gives compilation error: call of overloaded ‘f(NULL)’ is ambiguous
+		return 0;
+	}
+
+------------------
+
+#if, #ifdef, #ifndef, #elif, #else, #endif
+- The conditional preprocessing block starts with #if, #ifdef or #ifndef directive, 
+  then optionally includes any number of #elif directives, 
+  then optionally includes at most one #else directive 
+  and is terminated with #endif directive.
+- #ifdef is essentially equivalent to #if defined
+- #ifndef is essentially equivalent to #if !defined
+- e.g.: 
+	#define ABCD 2
+	#include <iostream>
+	int x;
+	int main()
+	{
+		#ifdef ABCD
+			std::cout << "1: yes\n";
+		#else
+			std::cout << "1: no\n";
+		#endif
+ 
+		#ifndef ABCD
+			std::cout << "2: no1\n";
+		#elif ABCD == 2
+			std::cout << "2: yes\n";
+		#else
+			std::cout << "2: no2\n";
+		#endif
+		
+		#if defined(x)
+			std::cout << "3: no\n";
+		#else
+			std::cout << "3: yes\n";	// defined(x) returns false since it only works for variables defined usinf #define directive
+		#endif
+	}
+
+------------------

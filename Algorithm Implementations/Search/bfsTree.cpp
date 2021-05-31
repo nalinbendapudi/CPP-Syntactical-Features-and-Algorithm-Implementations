@@ -2,6 +2,8 @@
 #include <queue>
 #include <vector>
 
+using namespace std;
+
 struct Node{
     char data;
     vector <Node*> children;
